@@ -15,6 +15,7 @@ public class MainWindow {
 	DatabaseConnection dbConnection;
 	LoginPanel loginPanel;
 	GamesPanel gamesPanel;
+	String currentGame;
 	
 	public MainWindow() {
 		//frame settings
@@ -30,7 +31,7 @@ public class MainWindow {
 		Listener listener = new Listener(dbConnection);
 		frame.addWindowListener(listener);
 		
-		
+		//add panels
 		this.addLoginPanel();
 		this.addGamePanel();
 		
@@ -88,6 +89,9 @@ public class MainWindow {
 	
 	
 	
+	public void changeCurrentGame(String gameName) {
+		this.currentGame = gameName;
+	}
 	
 	public void disconnect() {
 		loginPanel.setDisconnected();
@@ -97,6 +101,7 @@ public class MainWindow {
 	public void connect(String username) {
 		loginPanel.setConnected(username);
 		gamesPanel.populate();
+		gamesPanel.draw();
 	}
 	
 	public void show() {
