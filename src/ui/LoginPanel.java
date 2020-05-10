@@ -17,6 +17,7 @@ public class LoginPanel extends JPanel {
 	JPasswordField passwordField;
 	JButton loginButton;
 	JButton disconnectButton;
+	JButton registerButton;
 	
 	public LoginPanel() {
 		this.setBackground(Color.darkGray);
@@ -26,7 +27,6 @@ public class LoginPanel extends JPanel {
 		
 		//Add Components
 		this.loginStatus = new JLabel();
-		this.setDisconnected();
 		this.add(this.loginStatus);
 		this.loginStatus.setBounds(20, 15, 500, 20);
 		
@@ -54,17 +54,28 @@ public class LoginPanel extends JPanel {
 		
 		this.disconnectButton = new JButton("Disconnect");
 		this.add(this.disconnectButton);
-		this.disconnectButton.setBounds(1150, 10, 115, 30);
+		this.disconnectButton.setBounds(1070, 10, 75, 30);
+		
+		this.registerButton = new JButton("Register");
+		this.add(this.registerButton);
+		this.registerButton.setBounds(1150, 10, 115, 30);
+		this.setDisconnected();
 	}
 	
 	public void setDisconnected() {
 		this.loginStatus.setForeground(Color.RED);
 		this.loginStatus.setText("Disconnected");
+		this.remove(this.disconnectButton);
+		this.add(loginButton);
+		this.add(registerButton);
 	}
 	
 	public void setConnected(String username) {
 		this.loginStatus.setForeground(Color.GREEN);
 		this.loginStatus.setText("Connected As: "+ username);
+		this.remove(loginButton);
+		this.remove(registerButton);
+		this.add(disconnectButton);
 	}
 	
 }
