@@ -27,7 +27,7 @@ public class GameService {
 			int consolesIndex = RS.findColumn("Consoles");
 			
 			while (RS.next()) {
-				games.add(new Game(RS.getString(nameIndex), RS.getDate(madeIndex), RS.getString(consolesIndex)));
+				games.add(new Game(RS.getString(nameIndex), RS.getDate(madeIndex), RS.getString(consolesIndex), null));
 			}
 			
 		} catch (SQLException e) {

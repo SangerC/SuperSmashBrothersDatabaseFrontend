@@ -83,7 +83,6 @@ public class MainWindow {
 		gamesPanel = new GamesPanel(new GameService(dbConnection));
 		frame.add(gamesPanel);
 		gamesPanel.setLocation(0,600);
-
 	}
 	
 	
@@ -95,13 +94,12 @@ public class MainWindow {
 	
 	public void disconnect() {
 		loginPanel.setDisconnected();
-		gamesPanel.depopulate();
+		gamesPanel.setDisconnected();
 	}	
 	
 	public void connect(String username) {
 		loginPanel.setConnected(username);
-		gamesPanel.populate();
-		gamesPanel.draw();
+		gamesPanel.setConnected();
 	}
 	
 	public void show() {
