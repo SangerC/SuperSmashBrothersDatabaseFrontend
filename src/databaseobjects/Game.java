@@ -56,10 +56,10 @@ public class Game extends JPanel{
 	
 	public void draw() {
 		this.add(edit);
-		this.edit.setBounds(80, 100, 60, 15);
+		this.edit.setBounds(80, 103, 60, 15);
 		
 		this.add(remove);
-		this.remove.setBounds(147, 100, 45, 15);
+		this.remove.setBounds(147, 103, 45, 15);
 		
 		this.add(name);
 		this.name.setBounds(5,5,190,20);
@@ -77,6 +77,22 @@ public class Game extends JPanel{
 	
 	public String getNameText() {
 		return this.name.getText();
+	}
+	
+	public String getDateText() {
+		return this.dateMade.getText();
+	}
+	
+	public String getConsolesText() {
+		return this.consoles.getText();
+	}
+	
+	public JButton getRemove() {
+		return remove;
+	}
+	
+	public JButton getEdit() {
+		return edit;
 	}
 	
 }

@@ -70,6 +70,59 @@ public class GameService {
 		return false;
 	}
 	
+	public boolean deleteGame(String name) {
+		try {
+			CallableStatement str = dbConnection.getConnection().prepareCall("{? = call dbo.delete_Game(?)}");
+			str.registerOutParameter(1, Types.INTEGER);
+			str.setNString(2, name);
+			str.executeUpdate();
+			int returnValue = str.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "The game was succesfully removed from the database.");
+				return true;
+			}
+
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Game currently does not exist in the database.");
+			}
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Was unsuccessful in deleting the game from the database.");
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateGame(String name, String made, String consoles) {
+		try {
+			CallableStatement str = dbConnection.getConnection().prepareCall("{? = call dbo.update_Game(?,?,?)}");
+			str.registerOutParameter(1, Types.INTEGER);
+			str.setNString(2, name);
+			str.setNString(3, made);
+			str.setNString(4, consoles);
+			str.executeUpdate();
+			int returnValue = str.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "The game was succesfully updated in the database.");
+				return true;
+			}
+
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Game currently does not exist in the Database.");
+			}
+			
+			if (returnValue == 2) {
+				JOptionPane.showMessageDialog(null, "ERROR: Game name cannot be null");
+			}
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Was unsuccessful in updating the game from the database.");
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	
 	

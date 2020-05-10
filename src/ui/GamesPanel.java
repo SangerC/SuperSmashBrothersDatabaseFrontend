@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -88,6 +89,62 @@ public class GamesPanel extends JPanel {
 	public void populate() {
 		this.games = gameService.getGames();
 		this.leftIndex=0;
+		for(Game G : this.games) {
+			G.getRemove().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(gameService.deleteGame(G.getNameText())) {
+						depopulate();
+						setConnected();
+					}
+				}
+				
+			});
+			
+			G.getEdit().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Point p = G.getLocation();
+					EditGamePanel eg = new EditGamePanel(G);
+					remove(G);
+					add(eg);
+					eg.setLocation(p);
+					
+					eg.getDiscard().addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							remove(eg);
+							add(G);
+							G.revalidate();
+							G.repaint();
+						}
+						
+					});
+					
+					eg.getConfirm().addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							if(gameService.updateGame(eg.getNameText(), eg.getDateText(), eg.getConsolesText())){
+								remove(eg);
+								depopulate();
+								addGamePanel.clear();
+								setConnected();
+							}
+						}
+						
+					});
+					
+				}
+				
+			});
+			
+		}
+		
+		
 	}
 
 	public void depopulate() {
