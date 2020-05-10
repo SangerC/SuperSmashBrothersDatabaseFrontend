@@ -22,6 +22,9 @@ public class Game {
 		this.consoles = consoles;
 	}
 	
+	public String toString() {
+		return name + dateMade.toString() + consoles;
+	}
 	
 	
 }
