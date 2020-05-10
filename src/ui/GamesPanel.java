@@ -25,6 +25,14 @@ public class GamesPanel extends JPanel {
 		
 		
 	}
+	
+	public void populate() {
+		this.games = gameService.getGames();
+	}
+
+	public void depopulate() {
+		this.games = null;
+	}
 
 	
 	

@@ -39,4 +39,14 @@ public class DatabaseConnection {
 		}
 		return false;
 	}	
+	
+	public boolean isConnected() {
+		try {
+			if(connection!=null&&!connection.isClosed())return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

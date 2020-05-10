@@ -30,32 +30,11 @@ public class MainWindow {
 		Listener listener = new Listener(dbConnection);
 		frame.addWindowListener(listener);
 		
-		//Add login panel
-		loginPanel = new LoginPanel();
-		frame.add(loginPanel);
-		loginPanel.setLocation(0,0);
-		loginPanel.disconnectButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(dbConnection.closeConnection())loginPanel.setDisconnected();
-			}	
-		});
 		
-		loginPanel.loginButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(dbConnection.connect(Reader.getAttribute("serverName"),Reader.getAttribute("databaseName"),loginPanel.usernameField.getText(), new String(loginPanel.passwordField.getPassword()))) {
-					loginPanel.setConnected(loginPanel.usernameField.getText());
-				}
-			}	
-		});
+		this.addLoginPanel();
+		this.addGamePanel();
 		
-		//Add game panel
-		gamesPanel = new GamesPanel(new GameService(dbConnection));
-		frame.add(gamesPanel);
-		gamesPanel.setLocation(0,600);
+
 		
 		
 		
@@ -68,11 +47,63 @@ public class MainWindow {
 
 	}
 	
+	public void addLoginPanel() {
+		loginPanel = new LoginPanel();
+		frame.add(loginPanel);
+		loginPanel.setLocation(0,0);
+		loginPanel.disconnectButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(dbConnection.closeConnection())disconnect();
+			}	
+		});
+		
+		loginPanel.loginButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(dbConnection.connect(Reader.getAttribute("serverName"),Reader.getAttribute("databaseName"),loginPanel.usernameField.getText(), new String(loginPanel.passwordField.getPassword()))) {
+					connect(loginPanel.usernameField.getText());
+				}
+			}	
+		});
+		
+		loginPanel.registerButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+			}	
+		});
+	}
+	
+	public void addGamePanel() {
+		gamesPanel = new GamesPanel(new GameService(dbConnection));
+		frame.add(gamesPanel);
+		gamesPanel.setLocation(0,600);
+
+	}
+	
+	
+	
+	
+	
+	public void disconnect() {
+		loginPanel.setDisconnected();
+		gamesPanel.depopulate();
+	}	
+	
+	public void connect(String username) {
+		loginPanel.setConnected(username);
+		gamesPanel.populate();
+	}
+	
 	public void show() {
 		frame.setVisible(true);
 		//attempt login with defaults
 		if(dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"))){
-			loginPanel.setConnected(Reader.getAttribute("defaultUsername"));
+			this.connect(Reader.getAttribute("defaultUsername"));
 		}
 	}
 
