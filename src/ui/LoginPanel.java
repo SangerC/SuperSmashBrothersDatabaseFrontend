@@ -54,7 +54,7 @@ public class LoginPanel extends JPanel {
 		
 		this.disconnectButton = new JButton("Disconnect");
 		this.add(this.disconnectButton);
-		this.disconnectButton.setBounds(1070, 10, 75, 30);
+		this.disconnectButton.setBounds(1150, 10, 115, 30);
 		
 		this.registerButton = new JButton("Register");
 		this.add(this.registerButton);
@@ -68,6 +68,8 @@ public class LoginPanel extends JPanel {
 		this.remove(this.disconnectButton);
 		this.add(loginButton);
 		this.add(registerButton);
+		this.revalidate();
+		this.repaint();
 	}
 	
 	public void setConnected(String username) {
@@ -76,6 +78,8 @@ public class LoginPanel extends JPanel {
 		this.remove(loginButton);
 		this.remove(registerButton);
 		this.add(disconnectButton);
+		this.revalidate();
+		this.repaint();
 	}
 	
 }
