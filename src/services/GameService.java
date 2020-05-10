@@ -1,9 +1,13 @@
 package services;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import databaseobjects.Game;
 
@@ -35,5 +39,39 @@ public class GameService {
 		}		
 		return games;
 	}
+	
+	public boolean addGame(String name, String made, String consoles) {
+		try {
+			CallableStatement str = dbConnection.getConnection().prepareCall("{? = call dbo.insert_Game(?,?,?)}");
+			str.registerOutParameter(1, Types.INTEGER);
+			str.setNString(2, name);
+			str.setNString(3, made);
+			str.setNString(4, consoles);
+			str.executeUpdate();
+			int returnValue = str.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "The game was succesfully added to the database.");
+				return true;
+			}
+
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Game is already in the database.");
+			}
+
+			if (returnValue == 2) {
+				JOptionPane.showMessageDialog(null, "ERROR: Game name cannot be null");
+			}
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Was unsuccessful in adding the game to the database.");
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
+	
+	
 
 }

@@ -12,10 +12,12 @@ public class DatabaseConnection {
 		String connectionString = "jdbc:sqlserver://"+serverName+";databaseName="+ databaseName +";user=" + username + ";password=" + password+";";
 		try {
 			connection = DriverManager.getConnection(connectionString);
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			connection=null;
+			return false;
 		}
-		return connection != null ? true : false;
 	}
 	
 	public Connection getConnection() {

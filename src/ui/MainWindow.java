@@ -2,7 +2,12 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
+
+import databaseobjects.Game;
 import listeners.Listener;
 import services.DatabaseConnection;
 import services.GameService;
@@ -100,6 +105,41 @@ public class MainWindow {
 	public void connect(String username) {
 		loginPanel.setConnected(username);
 		gamesPanel.setConnected();
+		for(Game G : gamesPanel.games) {
+			G.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					changeCurrentGame(G.getNameText());
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+			});
+		}
+		
 	}
 	
 	public void show() {

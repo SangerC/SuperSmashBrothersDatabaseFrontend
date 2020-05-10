@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.sql.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -16,6 +17,8 @@ public class Game extends JPanel{
 	JLabel consoles;
 	ImageIcon image;
 	JLabel imageLabel;
+	JButton remove;
+	JButton edit;
 	
 	public Game(String name, Date dateMade, String consoles, Image image){
 		this.name = new JLabel(name);
@@ -44,11 +47,20 @@ public class Game extends JPanel{
 		this.imageLabel.setBackground(Color.BLACK);
 		this.imageLabel.setOpaque(true);
 		
+		this.edit = new JButton("Edit");
+		this.remove = new JButton("X");
+		
 		this.setSize(200, 125);
 		this.draw();
 	}
 	
 	public void draw() {
+		this.add(edit);
+		this.edit.setBounds(80, 100, 60, 15);
+		
+		this.add(remove);
+		this.remove.setBounds(147, 100, 45, 15);
+		
 		this.add(name);
 		this.name.setBounds(5,5,190,20);
 		
@@ -60,6 +72,11 @@ public class Game extends JPanel{
 
 		this.add(imageLabel);
 		this.imageLabel.setBounds(2,2,196,121);
+		
 	}	
+	
+	public String getNameText() {
+		return this.name.getText();
+	}
 	
 }
