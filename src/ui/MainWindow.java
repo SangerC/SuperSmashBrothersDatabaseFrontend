@@ -9,8 +9,12 @@ import javax.swing.JFrame;
 
 import databaseobjects.Game;
 import listeners.Listener;
+import services.CharacterService;
 import services.DatabaseConnection;
 import services.GameService;
+import services.ItemService;
+import services.ProfileService;
+import services.StageService;
 import utils.Reader;
 
 
@@ -20,6 +24,11 @@ public class MainWindow {
 	DatabaseConnection dbConnection;
 	LoginPanel loginPanel;
 	GamesPanel gamesPanel;
+	TabPanel tabPanel;
+	ViewPanel characterPanel;
+	ViewPanel stagePanel;
+	ViewPanel itemPanel;
+	ProfilePanel profilePanel;
 	String currentGame;
 	
 	public MainWindow() {
@@ -38,19 +47,9 @@ public class MainWindow {
 		
 		//add panels
 		this.addLoginPanel();
+		this.addViewPanels();
+		this.addTabPanel();
 		this.addGamePanel();
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 	}
 	
 	public void addLoginPanel() {
@@ -90,21 +89,95 @@ public class MainWindow {
 		gamesPanel.setLocation(0,600);
 	}
 	
+	public void addTabPanel() {
+		this.tabPanel = new TabPanel();
+		frame.add(tabPanel);
+		tabPanel.setLocation(0,50);
+		tabPanel.getCharacters().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.add(characterPanel);
+				frame.remove(stagePanel);
+				frame.remove(itemPanel);
+				frame.remove(profilePanel);
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		tabPanel.getStages().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.remove(characterPanel);
+				frame.add(stagePanel);
+				frame.remove(itemPanel);
+				frame.remove(profilePanel);
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		tabPanel.getItems().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.remove(characterPanel);
+				frame.remove(stagePanel);
+				frame.add(itemPanel);
+				frame.remove(profilePanel);
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		tabPanel.getProfile().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				frame.remove(characterPanel);
+				frame.remove(stagePanel);
+				frame.remove(itemPanel);
+				frame.add(profilePanel);
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		
+	}
 	
-	
+	public void addViewPanels() {
+		this.characterPanel = new CharacterPanel(new CharacterService(dbConnection));
+		this.stagePanel = new StagePanel(new StageService(dbConnection));
+		this.itemPanel = new ItemPanel(new ItemService(dbConnection));
+		this.profilePanel = new ProfilePanel(new ProfileService(dbConnection));
+		this.characterPanel.setLocation(0, 80);
+		this.stagePanel.setLocation(0, 80);
+		this.itemPanel.setLocation(0, 80);
+		this.profilePanel.setLocation(0, 80);
+		frame.add(characterPanel);
+	}
 	
 	public void changeCurrentGame(String gameName) {
 		this.currentGame = gameName;
+		characterPanel.setConnected(gameName);
+		itemPanel.setConnected(gameName);
+		stagePanel.setConnected(gameName);
 	}
 	
 	public void disconnect() {
 		loginPanel.setDisconnected();
 		gamesPanel.setDisconnected();
+		tabPanel.setDisconnected();
+		characterPanel.setDisconnected();
+		itemPanel.setDisconnected();
+		stagePanel.setDisconnected();
+		profilePanel.setDisconnected();
 	}	
 	
 	public void connect(String username) {
 		loginPanel.setConnected(username);
 		gamesPanel.setConnected();
+		tabPanel.setConnected();
+		profilePanel.setConnected();
 		for(Game G : gamesPanel.games) {
 			G.addMouseListener(new MouseListener() {
 
