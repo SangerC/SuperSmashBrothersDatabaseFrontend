@@ -35,12 +35,12 @@ public class LoginPanel extends JPanel {
 		this.usernameField.setBounds(550, 10, 200, 30);
 		
 		this.userNameText = new JLabel("Username");
-		this.userNameText.setForeground(Color.BLACK);
+		this.userNameText.setForeground(Color.WHITE);
 		this.add(this.userNameText);
 		this.userNameText.setBounds(465, 15, 85, 20);
 		
 		this.passwordText = new JLabel("Password");
-		this.passwordText.setForeground(Color.BLACK);
+		this.passwordText.setForeground(Color.WHITE);
 		this.add(this.passwordText);
 		this.passwordText.setBounds(775, 15, 85, 20);
 		
