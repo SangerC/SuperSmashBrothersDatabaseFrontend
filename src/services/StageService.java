@@ -90,7 +90,7 @@ public class StageService {
 
 			if (returnValue == 2) {
 				JOptionPane.showMessageDialog(null, "ERROR: Stage currently does not exist in the database.");
-			}
+			}  
 			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in deleting the stage from the database.");
