@@ -217,13 +217,10 @@ public class MainWindow {
 		
 	}
 	
-	// Currently this method is not in use.
 	public void show() {
 		frame.setVisible(true);
 		//attempt login with defaults
-		if(dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"))){		
-		//	connect(Reader.getAttribute("defaultUsername"));
-		}
+		dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
 	}
 
 }

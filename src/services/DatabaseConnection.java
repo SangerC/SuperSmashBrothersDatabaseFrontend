@@ -9,6 +9,7 @@ public class DatabaseConnection {
 	private Connection connection = null;
 
 	public boolean connect(String serverName, String databaseName, String username, String password) {
+		System.out.println("TRYING");
 		String connectionString = "jdbc:sqlserver://"+serverName+";databaseName="+ databaseName +";user=" + username + ";password=" + password+";";
 		try {
 			connection = DriverManager.getConnection(connectionString);
