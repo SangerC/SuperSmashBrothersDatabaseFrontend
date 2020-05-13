@@ -36,8 +36,7 @@ public abstract class ViewPanel extends JPanel {
 	}
 	
 	public void setDisconnected() {
-		this.remove(game);
-		this.remove(activeViewName);
+		this.removeAll();
 		this.revalidate();
 		this.repaint();
 	}
