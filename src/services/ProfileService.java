@@ -5,6 +5,8 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Base64;
@@ -101,6 +103,43 @@ public class ProfileService {
 			e.printStackTrace();
 		}
 		
+		return false;
+	}
+	
+	public boolean login(String username, String password) {
+		// TODO: Task 6
+		try {
+			PreparedStatement loginST = null;
+			loginST = dbConnection.getConnection()
+					.prepareStatement("SELECT PasswordSalt, PasswordHash \nFROM [User]\n WHERE Username = ?");
+			loginST.setString(1, username);
+
+			ResultSet rs = loginST.executeQuery();
+
+			String dbSalt = "";
+			String dbHash = "";
+
+			while (rs.next()) {
+				dbSalt = rs.getString(1);
+				dbHash = rs.getString(2);
+			}
+
+			byte[] dbByteSalt = getBytesFromString(dbSalt);
+			String newHashcode = hashPassword(dbByteSalt, password);
+
+			if (newHashcode.equals(dbHash)) {
+				return true;
+			}
+
+			if (!newHashcode.equals(dbHash)) {
+				JOptionPane.showMessageDialog(null, "Login Failed. Try Again");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 	
