@@ -22,7 +22,7 @@ public class EditGamePanel extends JPanel {
 	JButton discard;
 	
 	public EditGamePanel(Game g){
-		this.g = g;
+		this.g=g;
 		this.name = new JTextField(g.getNameText());
 		this.nameLabel = new JLabel("Game Name:");
 		this.dateMade = new JTextField(g.getDateText());

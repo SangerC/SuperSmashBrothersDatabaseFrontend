@@ -9,7 +9,7 @@ public class CharacterService {
 	DatabaseConnection dbConnection;
 
 	public CharacterService(DatabaseConnection dbConnection) {
-		this.dbConnection=dbConnection;
+		this.dbConnection = dbConnection;
 	}
 
 	public ArrayList<GameCharacter> getCharacters() {
