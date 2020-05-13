@@ -217,7 +217,7 @@ public class MainWindow {
 		
 	}
 	
-	
+	// Currently this method is not in use.
 	public void show() {
 		frame.setVisible(true);
 		//attempt login with defaults

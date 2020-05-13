@@ -92,12 +92,10 @@ public class LoginPanel extends JPanel {
 		boolean isRegistered = false;
 		isRegistered = userServices.register(this.usernameField.getText(), String.valueOf(this.passwordField.getPassword()));
 		if (isRegistered) {
-			this.usernameField.setText("");
-			this.passwordField.setText("");
-			this.remove(usernameField);
-			this.remove(passwordField);
-			this.remove(userNameText);
-			this.remove(passwordText);
+			this.usernameField.setVisible(false);
+			this.userNameText.setVisible(false);
+			this.passwordField.setVisible(false);
+			this.passwordText.setVisible(false);
 		}
 		return isRegistered;
 	}
@@ -106,13 +104,10 @@ public class LoginPanel extends JPanel {
 		boolean isLoggedIn = false;
 		isLoggedIn = userServices.login(this.usernameField.getText(), String.valueOf(this.passwordField.getPassword()));
 		if (isLoggedIn) {
-			this.usernameField.setText("");
-			this.passwordField.setText("");
-			this.remove(usernameField);
-			this.remove(passwordField);
-			this.remove(userNameText);
-			this.remove(passwordText);
-			
+			this.usernameField.setVisible(false);
+			this.userNameText.setVisible(false);
+			this.passwordField.setVisible(false);
+			this.passwordText.setVisible(false);
 		}
 		return isLoggedIn;
 	}

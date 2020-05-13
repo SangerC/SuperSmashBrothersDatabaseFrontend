@@ -126,6 +126,10 @@ public class UserServices {
 			}
 
 			byte[] dbByteSalt = getBytesFromString(dbSalt);
+			if (dbByteSalt.length == 0) {
+				JOptionPane.showMessageDialog(null, "Login Failed. Try Again");
+				return false;
+			}
 			String newHashcode = hashPassword(dbByteSalt, password);
 
 			if (newHashcode.equals(dbHash)) {
