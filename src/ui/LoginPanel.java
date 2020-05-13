@@ -8,6 +8,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import services.UserServices;
+
 public class LoginPanel extends JPanel {
 
 	JLabel loginStatus;
@@ -18,8 +20,12 @@ public class LoginPanel extends JPanel {
 	JButton loginButton;
 	JButton disconnectButton;
 	JButton registerButton;
+	UserServices userServices;
+//	public boolean loginRequired = false;
 	
-	public LoginPanel() {
+	public LoginPanel(UserServices userservices) {
+		this.userServices = userservices;
+		
 		this.setBackground(Color.darkGray);
 		this.setBorder(new LineBorder(Color.BLACK));
 		this.setSize(1280, 50);
@@ -80,6 +86,35 @@ public class LoginPanel extends JPanel {
 		this.add(disconnectButton);
 		this.revalidate();
 		this.repaint();
+	}
+	
+	public boolean registerUser() {	
+		boolean isRegistered = false;
+		isRegistered = userServices.register(this.usernameField.getText(), String.valueOf(this.passwordField.getPassword()));
+		if (isRegistered) {
+			this.usernameField.setText("");
+			this.passwordField.setText("");
+			this.remove(usernameField);
+			this.remove(passwordField);
+			this.remove(userNameText);
+			this.remove(passwordText);
+		}
+		return isRegistered;
+	}
+	
+	public boolean loginUser() {	
+		boolean isLoggedIn = false;
+		isLoggedIn = userServices.login(this.usernameField.getText(), String.valueOf(this.passwordField.getPassword()));
+		if (isLoggedIn) {
+			this.usernameField.setText("");
+			this.passwordField.setText("");
+			this.remove(usernameField);
+			this.remove(passwordField);
+			this.remove(userNameText);
+			this.remove(passwordText);
+			
+		}
+		return isLoggedIn;
 	}
 	
 }

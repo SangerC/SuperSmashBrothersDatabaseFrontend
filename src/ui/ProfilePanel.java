@@ -4,7 +4,7 @@ import services.ProfileService;
 
 public class ProfilePanel extends ViewPanel {
 	
-	ProfileService profileService;
+	ProfileService profileService; 
 
 	public ProfilePanel(ProfileService profileService) {
 		super();
