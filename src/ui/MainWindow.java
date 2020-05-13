@@ -39,6 +39,7 @@ public class MainWindow {
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(null);
+		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//create connection
@@ -61,13 +62,15 @@ public class MainWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(dbConnection.closeConnection())disconnect();
+				dbConnection.closeConnection();
+				disconnect();
 			}	
 		});
 		
 		loginPanel.loginButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
 				if (loginPanel.loginUser()) {
 					connect(loginPanel.usernameField.getText());
 				}
@@ -77,6 +80,7 @@ public class MainWindow {
 		loginPanel.registerButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
 				if (loginPanel.registerUser()) {
 					connect(loginPanel.usernameField.getText());
 				}
@@ -217,9 +221,8 @@ public class MainWindow {
 		
 	}
 	
-	public void show() {
-		frame.setVisible(true);
-		//attempt login with defaults
+	//to turn this off, simply comment out the method in the Main Class.
+	public void bypassLogin() {
 		dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
 	}
 
