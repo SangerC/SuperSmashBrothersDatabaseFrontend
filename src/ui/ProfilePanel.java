@@ -5,7 +5,7 @@ import services.ProfileService;
 public class ProfilePanel extends ViewPanel {
 	
 	ProfileService profileService; 
-
+ 
 	public ProfilePanel(ProfileService profileService) {
 		super();
 		this.remove(game);

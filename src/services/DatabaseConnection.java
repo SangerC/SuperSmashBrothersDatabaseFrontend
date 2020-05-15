@@ -19,7 +19,7 @@ public class DatabaseConnection {
 			return false;
 		}
 	}
-	
+	 
 	public Connection getConnection() {
 		return this.connection;
 	}

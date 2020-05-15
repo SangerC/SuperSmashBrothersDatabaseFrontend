@@ -27,8 +27,8 @@ public class MainWindow {
 	GamesPanel gamesPanel;
 	TabPanel tabPanel;
 	ViewPanel characterPanel;
-	ViewPanel stagePanel;
-	ViewPanel itemPanel;
+	StagePanel stagePanel;
+	ItemPanel itemPanel;
 	ProfilePanel profilePanel;
 	String currentGame;
 	
@@ -100,7 +100,7 @@ public class MainWindow {
 		frame.add(tabPanel);
 		tabPanel.setLocation(0,50);
 		tabPanel.getCharacters().addActionListener(new ActionListener() {
-
+ 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frame.add(characterPanel);
@@ -184,6 +184,7 @@ public class MainWindow {
 		gamesPanel.setConnected();
 		tabPanel.setConnected();
 		profilePanel.setConnected();
+		stagePanel.setConnected();
 		for(Game G : gamesPanel.games) {
 			G.addMouseListener(new MouseListener() {
 
@@ -214,7 +215,7 @@ public class MainWindow {
 				public void mouseReleased(MouseEvent e) {
 					// TODO Auto-generated method stub
 					
-				}
+				} 
 
 			});
 		}
