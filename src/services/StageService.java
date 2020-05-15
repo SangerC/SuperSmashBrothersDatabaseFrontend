@@ -9,6 +9,11 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import databaseobjects.GameCharacter;
+import databaseobjects.GameStage;
+import databaseobjects.SelectedCharacter;
+import databaseobjects.SelectedStage;
+
 public class StageService {
 
 	DatabaseConnection dbConnection;
@@ -18,14 +23,18 @@ public class StageService {
 	}
 	
 	// Returns all the stages of the database
-	public ArrayList<String> getStages(){
-		 ArrayList<String> stages = new ArrayList<String>();
+	public ArrayList<GameStage> getStages(String game) {
+		 ArrayList<GameStage> stages = new ArrayList<GameStage>();
 		 try {
 			Statement stageST = dbConnection.getConnection().createStatement();
-			String stageQuery = "SELECT Name FROM Stage";
+			String stageQuery = "SELECT * FROM Stage WHERE GameName = "+"'"+game+"'";
 			ResultSet stageRS = stageST.executeQuery(stageQuery);
+			
+			int nameIndex = stageRS.findColumn("Name");
+	//		int imageIndex = stRS.findColumn("Image");
+			
 			while (stageRS.next()) {
-				stages.add(stageRS.getString(1));
+				stages.add(new GameStage(stageRS.getString(nameIndex), null));
 			}
 			
 		} catch (SQLException e) {
@@ -34,7 +43,26 @@ public class StageService {
 		return stages;
 	}
 	
-	public void addStage(String name, String origin, String music, String gameName) {
+	public SelectedStage getStage(String game, String character) {
+		 try {
+			Statement stageST = dbConnection.getConnection().createStatement();
+			String stageQuery = "SELECT * FROM Stage WHERE GameName = "+"'"+game+"' and Name= '"+character+"'";
+			ResultSet stageRS = stageST.executeQuery(stageQuery);
+			
+			int nameIndex = stageRS.findColumn("Name");
+			int originIndex = stageRS.findColumn("Origin");
+			int musicIndex = stageRS.findColumn("Music");
+			
+			stageRS.next();
+			return new SelectedStage(stageRS.getString(nameIndex), stageRS.getString(originIndex),stageRS.getString(musicIndex));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean addStage(String name, String origin, String music, String gameName) {
 		try {
 			CallableStatement addStageST = dbConnection.getConnection().prepareCall("{? = call dbo.insert_Stage(?,?,?,?)}");
 			addStageST.registerOutParameter(1, Types.INTEGER);
@@ -47,6 +75,7 @@ public class StageService {
 
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The stage was succesfully added to the database.");
+				return true;
 			}
 
 			if (returnValue == 1) {
@@ -69,9 +98,10 @@ public class StageService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in adding the stage to the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void deleteStage(String name, String gameName) {
+	public boolean deleteStage(String name, String gameName) {
 		try {
 			CallableStatement deleteStageST = dbConnection.getConnection().prepareCall("{? = call dbo.delete_Stage(?,?)}");
 			deleteStageST.registerOutParameter(1, Types.INTEGER);
@@ -82,6 +112,7 @@ public class StageService {
 
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The stage was succesfully removed from the database.");
+				return true;
 			}
 			
 			if (returnValue == 1) {
@@ -96,9 +127,10 @@ public class StageService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in deleting the stage from the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void updateStage(String name, String origin, String music, String gameName) {
+	public boolean updateStages(String name, String origin, String music, String gameName) {
 		try {
 			CallableStatement updateStageST = dbConnection.getConnection().prepareCall("{? = call dbo.update_Stage(?,?,?,?)}");
 			updateStageST.registerOutParameter(1, Types.INTEGER);
@@ -111,6 +143,7 @@ public class StageService {
 
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The stage was succesfully updated in the database.");
+				return true;
 			}
 
 			if (returnValue == 1) {
@@ -129,6 +162,7 @@ public class StageService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in updating the stage from the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 }
