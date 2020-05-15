@@ -31,7 +31,7 @@ public class StageService {
 			ResultSet stageRS = stageST.executeQuery(stageQuery);
 			
 			int nameIndex = stageRS.findColumn("Name");
-	//		int imageIndex = stRS.findColumn("Image");
+			int imageIndex = stageRS.findColumn("Image");
 			
 			while (stageRS.next()) {
 				stages.add(new GameStage(stageRS.getString(nameIndex), null));

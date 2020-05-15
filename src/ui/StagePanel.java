@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import databaseobjects.GameCharacter;
 import databaseobjects.GameStage;
-import databaseobjects.SelectedCharacter;
 import databaseobjects.SelectedStage;
 import services.StageService;
 
@@ -28,7 +26,6 @@ public class StagePanel extends ViewPanel {
 
 	public StagePanel(StageService stageService) {
 		super();
-		// this.remove(game);
 		activeViewName.setText("Stages");
 		this.stageService = stageService;
 		this.leftButton = new JButton("<");
