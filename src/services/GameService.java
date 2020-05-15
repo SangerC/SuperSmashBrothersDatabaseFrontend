@@ -123,8 +123,5 @@ public class GameService {
 		}
 		return false;
 	}
-	
-	
-	
 
 }
