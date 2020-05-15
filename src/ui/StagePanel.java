@@ -76,6 +76,7 @@ public class StagePanel extends ViewPanel {
 		this.add(rightButton);
 		this.add(addStageButton);
 		this.stages = stageService.getStages(currentGame);
+		this.drawStages();
 		this.revalidate();
 		this.repaint();
 	}
