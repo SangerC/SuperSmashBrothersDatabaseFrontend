@@ -26,9 +26,9 @@ public class MainWindow {
 	LoginPanel loginPanel;
 	GamesPanel gamesPanel;
 	TabPanel tabPanel;
-	CharacterPanel characterPanel;
-	StagePanel stagePanel;
-	ItemPanel itemPanel;
+	ViewPanel characterPanel;
+	ViewPanel stagePanel;
+	ViewPanel itemPanel;
 	ProfilePanel profilePanel;
 	String currentGame;
 	
@@ -184,9 +184,6 @@ public class MainWindow {
 		gamesPanel.setConnected();
 		tabPanel.setConnected();
 		profilePanel.setConnected();
-		stagePanel.setConnected(currentGame);
-		itemPanel.setConnected();
-		characterPanel.setConnected(currentGame);
 		for(Game G : gamesPanel.games) {
 			G.addMouseListener(new MouseListener() {
 
