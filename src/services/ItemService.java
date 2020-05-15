@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import databaseobjects.GameItem;
+import databaseobjects.SelectedItem;
+import databaseobjects.SelectedStage;
+
 public class ItemService {
 
 	DatabaseConnection dbConnection;
@@ -18,36 +22,60 @@ public class ItemService {
 	}
 	
 	// Returns all the stages of the database
-	public ArrayList<String> getItems(){
-		 ArrayList<String> items = new ArrayList<String>();
-		 try {
-			Statement itemST = dbConnection.getConnection().createStatement();
-			String itemQuery = "SELECT Name FROM Item";
-			ResultSet itemRS = itemST.executeQuery(itemQuery);
-			while (itemRS.next()) {
-				items.add(itemRS.getString(1));
+	// Returns all the stages of the database
+		public ArrayList<GameItem> getItems(String game) {
+			 ArrayList<GameItem> items = new ArrayList<GameItem>();
+			 try {
+				Statement itemST = dbConnection.getConnection().createStatement();
+				String itemQuery = "SELECT * FROM Item WHERE GameName = "+"'"+game+"'";
+				ResultSet itemRS = itemST.executeQuery(itemQuery);
+				
+				int nameIndex = itemRS.findColumn("Name");
+				int imageIndex = itemRS.findColumn("Image");
+				
+				while (itemRS.next()) {
+					items.add(new GameItem(itemRS.getString(nameIndex), null));
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}		
+			return items;
+		}
+		
+		public SelectedItem getItem(String game, String character) {
+			 try {
+				Statement itemST = dbConnection.getConnection().createStatement();
+				String itemQuery = "SELECT * FROM Item WHERE GameName = "+"'"+game+"' and Name= '"+character+"'";
+				ResultSet itemRS = itemST.executeQuery(itemQuery);
+				
+				int nameIndex = itemRS.findColumn("Name");
+				int originIndex = itemRS.findColumn("Origin");
+				int musicIndex = itemRS.findColumn("Type");
+				
+				itemRS.next();
+				return new SelectedItem(itemRS.getString(nameIndex), itemRS.getString(originIndex),itemRS.getString(musicIndex));
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
-		return items;
-	}
+			return null;
+		}
 	
-	public void addItem(String name, String origin, String projectile, String type, String gameName) {
+	public boolean addItem(String name, String origin, String type, String gameName) {
 		try {
-			CallableStatement addItemST = dbConnection.getConnection().prepareCall("{? = call dbo.insert_Item(?,?,?,?,?)}");
+			CallableStatement addItemST = dbConnection.getConnection().prepareCall("{? = call dbo.insert_Item(?,?,?,?)}");
 			addItemST.registerOutParameter(1, Types.INTEGER);
 			addItemST.setNString(2, name);
 			addItemST.setNString(3, origin);
-			addItemST.setNString(4, projectile);
-			addItemST.setNString(5, type);
-			addItemST.setNString(6, gameName);
+			addItemST.setNString(4, type);
+			addItemST.setNString(5, gameName);
 			addItemST.executeUpdate();
 			int returnValue = addItemST.getInt(1);
 
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The Item was succesfully added to the database.");
+				return true;
 			}
 
 			if (returnValue == 1) {
@@ -70,9 +98,10 @@ public class ItemService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in adding the Item to the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void deleteItem(String name, String gameName) {
+	public boolean deleteItem(String name, String gameName) {
 		try {
 			CallableStatement deleteItemsST = dbConnection.getConnection().prepareCall("{? = call dbo.delete_Item(?,?)}");
 			deleteItemsST.registerOutParameter(1, Types.INTEGER);
@@ -83,6 +112,7 @@ public class ItemService {
 
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The Item was succesfully removed from the database.");
+				return true;
 			}
 			
 			if (returnValue == 1) {
@@ -97,22 +127,23 @@ public class ItemService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in deleting the Item from the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	public void updateItem(String name, String origin, String projectile, String type, String gameName) {
+	public boolean updateItem(String name, String origin, String type, String gameName) {
 		try {
-			CallableStatement updateItemST = dbConnection.getConnection().prepareCall("{? = call dbo.update_Item(?,?,?,?,?)}");
+			CallableStatement updateItemST = dbConnection.getConnection().prepareCall("{? = call dbo.update_Item(?,?,?,?)}");
 			updateItemST.registerOutParameter(1, Types.INTEGER);
 			updateItemST.setNString(2, name);
 			updateItemST.setNString(3, origin);
-			updateItemST.setNString(4, projectile);
-			updateItemST.setNString(5, type);
-			updateItemST.setNString(6, gameName);
+			updateItemST.setNString(4, type);
+			updateItemST.setNString(5, gameName);
 			updateItemST.executeUpdate();
 			int returnValue = updateItemST.getInt(1);
 			
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "The Item was succesfully updated in the database.");
+				return true;
 			}
 
 			if (returnValue == 1) {
@@ -131,6 +162,7 @@ public class ItemService {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in updating the Item from the database.");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 
