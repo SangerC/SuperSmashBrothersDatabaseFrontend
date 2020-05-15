@@ -27,7 +27,7 @@ public class TabPanel extends JPanel{
 		this.items.setBounds(740, 5, 100, 20);
 		this.profile.setBounds(1170, 5, 80, 20);
 	}
-	
+	 
 	public void setConnected(){
 		this.add(profile);
 		this.add(items);
