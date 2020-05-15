@@ -65,7 +65,7 @@ public class CharacterPanel extends ViewPanel {
 		this.rightButton.setBounds(1200, 5, 50, 25);
 		this.addCharacterButton.setBounds(1090, 5, 50, 25);
 		this.addCharacter = new AddCharacter(null);
-		this.selectedCharacter = new SelectedCharacter("");
+		this.selectedCharacter = new SelectedCharacter("", "", 0,0);
 	}
 	
 	@Override
@@ -81,10 +81,66 @@ public class CharacterPanel extends ViewPanel {
 		this.repaint();
 	}
 	
-	public void drawSelectedCharacter() {
-		this.remove(addCharacter);
+	public void drawSelectedCharacter(String name) {
+		this.selectedCharacter = characterService.getCharacter(game.getText(), name);
+		this.removeAll();
+		this.setConnected(this.game.getText());
 		this.add(selectedCharacter);
 		this.selectedCharacter.setLocation(10,40);
+		
+		this.selectedCharacter.getDelete().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(characterService.deleteCharacter(game.getText(), name)) setConnected(game.getText());
+			}
+
+		});
+		
+		this.selectedCharacter.getUpdate().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				addCharacter = new AddCharacter(game.getText(), selectedCharacter);
+				remove(selectedCharacter);
+				add(addCharacter);
+				addCharacter.setLocation(10,40);
+				revalidate();
+				repaint();
+				addCharacter.addButton.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+
+						int speed = Integer.valueOf(addCharacter.speed.getText());
+						int weight = Integer.valueOf(addCharacter.weight.getText());
+							
+						if(characterService.updateCharacter(game.getText(), addCharacter.name.getText(), addCharacter.origin.getText(), speed, weight)) {
+							characters = characterService.getCharacters(game.getText());
+							drawCharacters();	
+							drawSelectedCharacter(addCharacter.name.getText());
+						}
+						
+					}
+
+				});
+				
+				addCharacter.discard.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						setConnected(game.getText());
+					}
+
+				});
+				
+				
+			}
+
+		});
+		
+		this.selectedCharacter.revalidate();
+		this.selectedCharacter.repaint();
 		this.revalidate();
 		this.repaint();
 	}
@@ -104,9 +160,18 @@ public class CharacterPanel extends ViewPanel {
 					
 				if(characterService.addCharacter(game.getText(), addCharacter.name.getText(), addCharacter.origin.getText(), speed, weight)) {
 					characters = characterService.getCharacters(game.getText());
-					drawCharacters();	
+					drawCharacters();
+					drawSelectedCharacter(addCharacter.name.getText());
 				}
 				
+			}
+
+		});
+		addCharacter.discard.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setConnected(game.getText());
 			}
 
 		});
@@ -135,8 +200,7 @@ public class CharacterPanel extends ViewPanel {
 
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					selectedCharacter = new SelectedCharacter(c.getNameText());
-					drawSelectedCharacter();
+					drawSelectedCharacter(c.getNameText());
 				}
 
 				@Override

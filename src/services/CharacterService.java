@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import databaseobjects.GameCharacter;
+import databaseobjects.SelectedCharacter;
 
 public class CharacterService {
 
@@ -39,6 +40,26 @@ public class CharacterService {
 		return characters;
 	}
 	
+	public SelectedCharacter getCharacter(String game, String character) {
+		 try {
+			Statement characterST = dbConnection.getConnection().createStatement();
+			String characterQuery = "SELECT * FROM Character WHERE GameName = "+"'"+game+"' and Name= '"+character+"'";
+			ResultSet characterRS = characterST.executeQuery(characterQuery);
+			
+			int nameIndex = characterRS.findColumn("Name");
+			int originIndex = characterRS.findColumn("Origin");
+			int speedIndex = characterRS.findColumn("Speed");
+			int weightIndex = characterRS.findColumn("Weight");
+			
+			characterRS.next();
+			return new SelectedCharacter(characterRS.getString(nameIndex), characterRS.getString(originIndex),characterRS.getInt(speedIndex),characterRS.getInt(weightIndex));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public boolean addCharacter(String game, String name, String origin, int speed, int weight) {
 
 		try {
@@ -63,6 +84,60 @@ public class CharacterService {
 			
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Was unsuccessful in adding the character to the database.");
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateCharacter(String game, String name, String origin, int speed, int weight) {
+
+		try {
+			CallableStatement str = dbConnection.getConnection().prepareCall("{? = call dbo.update_Character(?,?,?,?,?)}");
+			str.registerOutParameter(1, Types.INTEGER);
+			str.setNString(2, game);
+			str.setNString(3, name);
+			str.setNString(4, origin);
+			str.setInt(5, speed);
+			str.setInt(6, weight);
+			str.executeUpdate();
+			int returnValue = str.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "The character was succesfully updated to the database.");
+				return true;
+			}
+
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Character is in current Game");
+			}
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Was unsuccessful in adding the character to the database.");
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean deleteCharacter(String game, String name) {
+		try {
+			CallableStatement str = dbConnection.getConnection().prepareCall("{? = call dbo.delete_Character(?,?)}");
+			str.registerOutParameter(1, Types.INTEGER);
+			str.setNString(2, game);
+			str.setNString(3, name);
+			str.executeUpdate();
+			int returnValue = str.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "The character was succesfully removed from the database.");
+				return true;
+			}
+
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Character currently does not exist in this database or is not in this game");
+			}
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Was unsuccessful in deleting the character from the database.");
 			e.printStackTrace();
 		}
 		return false;

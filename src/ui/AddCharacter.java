@@ -9,26 +9,48 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import databaseobjects.SelectedCharacter;
+
 public class AddCharacter extends JPanel {
 	
 	String game;
 	JButton addButton;
+	JButton discard;
 	JLabel nameLabel;
 	JLabel originLabel;
 	JLabel speedLabel;
 	JLabel weightLabel;
 	JTextField name;
-	JTextField origin;
+	JTextArea origin;
 	JTextField speed;
 	JTextField weight;
 	
 	public AddCharacter(String game) {
+		addLabels(game);
+	}
+	
+	public AddCharacter(String game, SelectedCharacter character) {
+		addLabels(game);
+		
+		this.name.setText(character.getNameText());
+		this.origin.setText(character.getOriginText());
+		this.speed.setText(character.getSpeedText());
+		this.weight.setText(character.getWeightText());
+		
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void addLabels(String game) {
 		this.setSize(400, 475);
+		this.setLayout(null);
 		this.setBackground(Color.DARK_GRAY);
 		this.game = game;
 		this.addButton = new JButton("Add");
 		this.add(this.addButton);
 		this.nameLabel = new JLabel("Name:");
+		this.discard = new JButton("Discard");
+		this.add(discard);
 		this.add(nameLabel);
 		this.nameLabel.setForeground(Color.WHITE);
 		this.originLabel = new JLabel("Origin:");
@@ -47,15 +69,15 @@ public class AddCharacter extends JPanel {
 		
 		this.name = new JTextField();
 		this.add(name);
-		this.origin = new JTextField();
+		this.origin = new JTextArea();
 		this.add(origin);
 		this.speed = new JTextField();
 		this.add(speed);
 		this.weight = new JTextField();
 		this.add(weight);
 		
-		
 		this.addButton.setBounds(300, 450, 75, 20);
+		this.discard.setBounds(175, 450, 100, 20);
 		this.nameLabel.setBounds(10, 20, 150, 40);
 		this.name.setBounds(100, 20, 150, 40);
 		this.originLabel.setBounds(10, 100, 150, 40);
