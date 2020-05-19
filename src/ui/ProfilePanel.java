@@ -5,7 +5,8 @@ import services.ProfileService;
 public class ProfilePanel extends ViewPanel {
 	
 	ProfileService profileService; 
- 
+ 	String username;
+
 	public ProfilePanel(ProfileService profileService) {
 		super();
 		this.remove(game);
@@ -13,8 +14,9 @@ public class ProfilePanel extends ViewPanel {
 		this.profileService = profileService;
 	}
 	
-	public void setConnected() {
+	public void setConnected(String username) {
 		this.add(activeViewName);
+		this.username = username;
 		this.revalidate();
 		this.repaint();
 	}

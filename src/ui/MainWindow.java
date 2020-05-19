@@ -183,7 +183,7 @@ public class MainWindow {
 		loginPanel.setConnected(username);
 		gamesPanel.setConnected();
 		tabPanel.setConnected();
-		profilePanel.setConnected();
+		profilePanel.setConnected(username);
 		for(Game G : gamesPanel.games) {
 			G.addMouseListener(new MouseListener() {
 
