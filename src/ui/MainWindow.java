@@ -224,7 +224,7 @@ public class MainWindow {
 	//To turn this off, simply comment out the method in the Main Class.
 	public void bypassLogin() {
 		dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"), Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
-		connect("LOGIN BYPASSED");
+		connect(Reader.getAttribute("defaultUsername"));
 	}
 
 }
