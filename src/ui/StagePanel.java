@@ -92,7 +92,7 @@ public class StagePanel extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(stageService.deleteStage(game.getText(), name)) setConnected(game.getText());
+				if(stageService.deleteStage (name, game.getText())) setConnected(game.getText());
 			}
 
 		});
