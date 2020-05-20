@@ -14,8 +14,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import services.CharacterService;
+import services.CostumeService;
 import services.DatabaseConnection;
+import services.GameService;
 import services.ItemService;
+import services.MoveService;
 import services.StageService;
 
 /*
@@ -27,12 +31,21 @@ public class DataImporter {
 	DatabaseConnection dbConnection = new DatabaseConnection();
 	StageService stageServices;
 	ItemService itemServices;
+	CharacterService characterServices;
+	CostumeService costumeServices;
+	GameService gameServices;
+	MoveService moveServices;
 
 	public DataImporter() {
 		dbConnection = new DatabaseConnection();
 		connect();
 		stageServices = new StageService(dbConnection);
 		itemServices = new ItemService(dbConnection);
+		characterServices = new CharacterService(dbConnection);
+		costumeServices = new CostumeService(dbConnection);
+		gameServices = new GameService(dbConnection);
+		moveServices = new MoveService(dbConnection);
+
 	}
 
 	public void dataimport(int i) throws EncryptedDocumentException, IOException {
@@ -47,30 +60,29 @@ public class DataImporter {
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			if (row.getRowNum() > 0) {
-				switch (i) {			
+				switch (i) {
 				case 0:
-					System.out.println("Used for Characters");
+					gameServices.addGame(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							row.getCell(2).getStringCellValue());
 					break;
-					
+
 				case 1:
-					System.out.println("Used for Characters");
+					characterServices.addCharacter(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							row.getCell(2).getStringCellValue(), (int) row.getCell(3).getNumericCellValue(),
+							(int) row.getCell(4).getNumericCellValue());
 					break;
-					
+
 				case 2:
-					System.out.println("Used for Characters");
+					System.out.println("COSTUMES CURRENTLY EMPTY");
 					break;
-					
+
 				case 3:
-					System.out.println("Used for Characters");
-					break;
-					
-				case 4:
 					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
 					break;
-				case 5:
+				case 4:
 					itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							(int)row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
+							(int) row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
 					break;
 				default:
 					System.out.print("No clear sheet picked. Stopping Import");
@@ -89,7 +101,7 @@ public class DataImporter {
 
 	public static void main(String[] args) throws IOException, InvalidFormatException {
 		DataImporter dataImporter = new DataImporter();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			dataImporter.dataimport(i);
 		}
 		System.out.println("All data has successfully been imported into the Database");
