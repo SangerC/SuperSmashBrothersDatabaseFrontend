@@ -1,102 +1,84 @@
 package utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.record.DBCellRecord;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import services.DatabaseConnection;
+import services.ItemService;
+import services.StageService;
+
 /*
  * This program reads from an Excel file and imports that data into the database.
  */
 public class DataImporter {
+
 	public static final String FILE_PATH = "C:\\Users\\scottjm1\\Documents\\CSSE\\CSSE 333\\SuperSmashData.xlsx";
+	DatabaseConnection dbConnection = new DatabaseConnection();
+	StageService stageServices;
+	ItemService itemServices;
 
-	public static void main(String[] args) throws IOException, InvalidFormatException {
+	public DataImporter() {
+		dbConnection = new DatabaseConnection();
+		connect();
+		stageServices = new StageService(dbConnection);
+		itemServices = new ItemService(dbConnection);
+	}
 
-		// Creating a Workbook from an Excel File
+	public void dataimport(int i) throws EncryptedDocumentException, IOException {
+		// // Creating a Workbook from an Excel File
 		Workbook workbook = WorkbookFactory.create(new File(FILE_PATH));
 
-		// Retrieve the # of sheets in the workbook
-		System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
-
-		// This is who we iterate through all sheets.
-		Iterator<Sheet> sheetIterator = workbook.sheetIterator();
-		System.out.println("Retrieving Sheets using Iterator");
-		Sheet sheet = sheetIterator.next();
-		System.out.println("=> " + sheet.getSheetName());
-
-		// Iterating through rows and columns in a sheet
-
 		// Gets the first sheet
-		Sheet theSheet = workbook.getSheetAt(0);
-
-		// Create a DataFormatter to format and get each cell's value as String
-		DataFormatter dataFormatter = new DataFormatter();
+		Sheet theSheet = workbook.getSheetAt(i);
 
 		// Obtain a rowIterator and columnIterator
-		System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
 		Iterator<Row> rowIterator = theSheet.rowIterator();
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			if (row.getRowNum() > 0) {
-//				sodaService.addSoda(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue());
-				
-//				// Now let's iterate over the columns of the current row
-//				Iterator<Cell> cellIterator = row.cellIterator();
-//				while (cellIterator.hasNext()) {
-//					Cell cell = cellIterator.next();
-//					//printCellValue(cell);
-//				}
-				System.out.println();
+				switch (i) {
+				case 0:
+					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
+					break;
+				case 1:
+					itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							(int)row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
+					break;
+				case 2:
+					System.out.println("Used for Characters");
+				default:
+					System.out.print("No clear sheet picked. Stopping Import");
+					return;
+				}
 			}
-			
-			// We are not going to use data formatter however.
-			/*
-			 * while (cellIterator.hasNext()) { Cell cell = cellIterator.next(); String
-			 * cellValue = dataFormatter.formatCellValue(cell); System.out.print(cellValue +
-			 * "\t"); } System.out.println();
-			 */ }
-
+		}
 		// Close the workbook
-
 		workbook.close();
-
 	}
 
-	private static void printCellValue(Cell cell) {
-		switch (cell.getCellType()){
-		case BOOLEAN:
-			System.out.print(cell.getBooleanCellValue());
-			break;
-		case STRING:
-			System.out.print(cell.getRichStringCellValue().getString());
-			break;
-		case NUMERIC:
-			if (DateUtil.isCellDateFormatted(cell)) {
-				System.out.print(cell.getDateCellValue());
-			} else {
-				System.out.print(cell.getNumericCellValue());
-			}
-			break;
-		case FORMULA:
-			System.out.print(cell.getCellFormula());
-			break;
-		case BLANK:
-			System.out.print("");
-			break;
-		default:
-			System.out.print("");
-		}
+	private void connect() {
+		dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"),
+				Reader.getAttribute("defaultUsername"), Reader.getAttribute("defaultPassword"));
+	}
 
-	    System.out.print("\t");
+	public static void main(String[] args) throws IOException, InvalidFormatException {
+		DataImporter dataImporter = new DataImporter();
+		for (int i = 0; i < 2; i++) {
+			dataImporter.dataimport(i);
+		}
+		System.out.println("All data has successfully been imported into the Database");
 	}
 
 }
-
