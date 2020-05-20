@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class SelectedCharacter extends JPanel{
 	
@@ -17,6 +18,15 @@ public class SelectedCharacter extends JPanel{
 	JLabel weightLabel;
 	JButton delete;
 	JButton update;
+	
+	JLabel DamageFrames;
+	JLabel directionLabel;
+	JLabel typeLabel;
+	JLabel directionExamples;
+	JLabel typeExamples;
+	JTextField moveDirection;
+	JTextField moveType;
+	JButton findMove;
 
 	public SelectedCharacter(String nameText, String origin, int speed, int weight) {
 		this.setBackground(Color.DARK_GRAY);
@@ -43,12 +53,36 @@ public class SelectedCharacter extends JPanel{
 		this.weightLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		this.weightLabel.setForeground(Color.WHITE);
 		
+		moveDirection = new JTextField();
+		this.add(moveDirection);
+		
+		moveType = new JTextField();
+		this.add(moveType);
+		
+		directionLabel = new JLabel("Enter a move direction");
+		this.add(directionLabel);
+		this.directionLabel.setForeground(Color.WHITE);
+		
+		typeLabel = new JLabel("Enter a move type");
+		this.add(typeLabel);
+		this.typeLabel.setForeground(Color.WHITE);
+		
+		directionExamples = new JLabel("(up, down, left, right)");
+		this.add(directionExamples);
+		this.directionExamples.setForeground(Color.WHITE);
+		
+		typeExamples = new JLabel("(strong, smash, special, aerial)");
+		this.add(typeExamples);
+		this.typeExamples.setForeground(Color.WHITE);
 		
 		this.delete = new JButton("X");
 		this.add(delete);
 		
 		this.update = new JButton("Edit");
 		this.add(update);
+		
+		this.findMove = new JButton("Get move");
+		this.add(findMove);
 		
 		this.origin = new JLabel(origin);
 		this.origin.setForeground(Color.WHITE);
@@ -69,6 +103,14 @@ public class SelectedCharacter extends JPanel{
 		this.weightLabel.setBounds(5, 325, 150, 200);
 		this.delete.setBounds(340, 440, 50, 25);
 		this.update.setBounds(250, 440, 80, 25);
+		
+		this.typeLabel.setBounds(240, 200, 500, 25);
+		this.typeExamples.setBounds(205, 215, 500, 25);
+		this.moveType.setBounds(240, 240, 100, 25);
+		this.directionLabel.setBounds(230, 280, 500, 25);
+		this.directionExamples.setBounds(235, 295, 500, 25);
+		this.moveDirection.setBounds(240, 320, 100, 25);
+		this.findMove.setBounds(240, 360, 100, 25);
 	}
 
 	public JButton getDelete(){
