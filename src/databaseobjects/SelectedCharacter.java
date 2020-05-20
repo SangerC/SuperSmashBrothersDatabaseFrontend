@@ -2,10 +2,15 @@ package databaseobjects;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import services.MoveService;
 
 public class SelectedCharacter extends JPanel{
 	
@@ -19,7 +24,7 @@ public class SelectedCharacter extends JPanel{
 	JButton delete;
 	JButton update;
 	
-	JLabel DamageFrames;
+	JLabel damageFrames;
 	JLabel directionLabel;
 	JLabel typeLabel;
 	JLabel directionExamples;
@@ -28,7 +33,7 @@ public class SelectedCharacter extends JPanel{
 	JTextField moveType;
 	JButton findMove;
 
-	public SelectedCharacter(String nameText, String origin, int speed, int weight) {
+	public SelectedCharacter(MoveService moveService, String game, String nameText, String origin, int speed, int weight) {
 		this.setBackground(Color.DARK_GRAY);
 		this.setSize(400, 475);
 		this.setLayout(null);
@@ -53,6 +58,10 @@ public class SelectedCharacter extends JPanel{
 		this.weightLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		this.weightLabel.setForeground(Color.WHITE);
 		
+		damageFrames = new JLabel("");
+		this.add(damageFrames);
+		this.damageFrames.setForeground(Color.WHITE);
+		
 		moveDirection = new JTextField();
 		this.add(moveDirection);
 		
@@ -67,7 +76,7 @@ public class SelectedCharacter extends JPanel{
 		this.add(typeLabel);
 		this.typeLabel.setForeground(Color.WHITE);
 		
-		directionExamples = new JLabel("(up, down, left, right)");
+		directionExamples = new JLabel("(up, down, forward, back)");
 		this.add(directionExamples);
 		this.directionExamples.setForeground(Color.WHITE);
 		
@@ -75,14 +84,20 @@ public class SelectedCharacter extends JPanel{
 		this.add(typeExamples);
 		this.typeExamples.setForeground(Color.WHITE);
 		
-		this.delete = new JButton("X");
+		delete = new JButton("X");
 		this.add(delete);
 		
-		this.update = new JButton("Edit");
+		update = new JButton("Edit");
 		this.add(update);
 		
-		this.findMove = new JButton("Get move");
+		findMove = new JButton("Get move");
 		this.add(findMove);
+		findMove.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					damageFrames.setText(moveService.getFrameData(nameText, game, moveType.getText(), moveDirection.getText()));
+			}});
 		
 		this.origin = new JLabel(origin);
 		this.origin.setForeground(Color.WHITE);
@@ -104,6 +119,7 @@ public class SelectedCharacter extends JPanel{
 		this.delete.setBounds(340, 440, 50, 25);
 		this.update.setBounds(250, 440, 80, 25);
 		
+		this.damageFrames.setBounds(200, 180, 500, 25);
 		this.typeLabel.setBounds(240, 200, 500, 25);
 		this.typeExamples.setBounds(205, 215, 500, 25);
 		this.moveType.setBounds(240, 240, 100, 25);
