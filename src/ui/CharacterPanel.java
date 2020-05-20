@@ -11,10 +11,12 @@ import javax.swing.JButton;
 import databaseobjects.GameCharacter;
 import databaseobjects.SelectedCharacter;
 import services.CharacterService;
+import services.MoveService;
 
 public class CharacterPanel extends ViewPanel {
 
 	CharacterService characterService;
+	MoveService moveService;
 	SelectedCharacter selectedCharacter;
 	AddCharacter addCharacter;
 	ArrayList<GameCharacter> characters;
@@ -23,10 +25,11 @@ public class CharacterPanel extends ViewPanel {
 	JButton rightButton;
 	JButton addCharacterButton;
 	
-	public CharacterPanel(CharacterService characterService) {
+	public CharacterPanel(CharacterService characterService, MoveService moveService) {
 		super();
 		activeViewName.setText("Characters");
 		this.characterService = characterService;
+		this.moveService = moveService;
 		page=0;
 		this.leftButton = new JButton("<");
 		this.rightButton = new JButton(">");
@@ -65,7 +68,7 @@ public class CharacterPanel extends ViewPanel {
 		this.rightButton.setBounds(1200, 5, 50, 25);
 		this.addCharacterButton.setBounds(1090, 5, 50, 25);
 		this.addCharacter = new AddCharacter(null);
-		this.selectedCharacter = new SelectedCharacter("", "", 0,0);
+		this.selectedCharacter = new SelectedCharacter(moveService, "", "", "", 0,0);
 	}
 	
 	@Override
@@ -82,7 +85,7 @@ public class CharacterPanel extends ViewPanel {
 	}
 	
 	public void drawSelectedCharacter(String name) {
-		this.selectedCharacter = characterService.getCharacter(game.getText(), name);
+		this.selectedCharacter = characterService.getCharacter(moveService, game.getText(), name);
 		this.removeAll();
 		this.setConnected(this.game.getText());
 		this.add(selectedCharacter);

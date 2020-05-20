@@ -40,7 +40,7 @@ public class CharacterService {
 		return characters;
 	}
 	
-	public SelectedCharacter getCharacter(String game, String character) {
+	public SelectedCharacter getCharacter(MoveService moveService, String game, String character) {
 		 try {
 			Statement characterST = dbConnection.getConnection().createStatement();
 			String characterQuery = "SELECT * FROM Character WHERE GameName = "+"'"+game+"' and Name= '"+character+"'";
@@ -52,7 +52,7 @@ public class CharacterService {
 			int weightIndex = characterRS.findColumn("Weight");
 			
 			characterRS.next();
-			return new SelectedCharacter(characterRS.getString(nameIndex), characterRS.getString(originIndex),characterRS.getInt(speedIndex),characterRS.getInt(weightIndex));
+			return new SelectedCharacter(moveService, game, characterRS.getString(nameIndex), characterRS.getString(originIndex),characterRS.getInt(speedIndex),characterRS.getInt(weightIndex));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

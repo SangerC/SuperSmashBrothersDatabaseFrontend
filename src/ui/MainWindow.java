@@ -13,6 +13,7 @@ import services.CharacterService;
 import services.DatabaseConnection;
 import services.GameService;
 import services.ItemService;
+import services.MoveService;
 import services.ProfileService;
 import services.StageService;
 import services.UserServices;
@@ -151,7 +152,7 @@ public class MainWindow {
 	}
 	
 	public void addViewPanels() {
-		this.characterPanel = new CharacterPanel(new CharacterService(dbConnection));
+		this.characterPanel = new CharacterPanel(new CharacterService(dbConnection), new MoveService(dbConnection));
 		this.stagePanel = new StagePanel(new StageService(dbConnection));
 		this.itemPanel = new ItemPanel(new ItemService(dbConnection));
 		this.profilePanel = new ProfilePanel(new ProfileService(dbConnection));
