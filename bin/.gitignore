@@ -1,3 +1,20 @@
+<<<<<<< HEAD
 /services/
 /ui/
 /databaseobjects/
+=======
+/databaseobjects/
+/listeners/
+/main/
+<<<<<<< HEAD
+/databaseobjects/
+/services/
+/ui/
+/tags
+=======
+/services/
+/tags
+/ui/
+/utils/
+>>>>>>> branch 'master' of https://github.com/SangerC/SuperSmashBrothersDatabaseFrontend.git
+>>>>>>> branch 'master' of https://github.com/SangerC/SuperSmashBrothersDatabaseFrontend.git
