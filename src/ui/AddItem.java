@@ -33,7 +33,7 @@ public class AddItem extends JPanel{
 		
 		this.name.setText(item.getNameText());
 		this.origin.setText(item.getOriginText());
-		this.type.setText(item.getMusicText());
+		this.type.setText(item.getTypeText());
 		
 		this.revalidate();
 		this.repaint();

@@ -32,7 +32,7 @@ public class SelectedItem extends JPanel{
 		this.originLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		this.originLabel.setForeground(Color.WHITE);
 		
-		typeLabel = new JLabel("Music:");
+		typeLabel = new JLabel("Type:");
 		this.add(typeLabel);
 		this.typeLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		this.typeLabel.setForeground(Color.WHITE);
@@ -75,7 +75,7 @@ public class SelectedItem extends JPanel{
 		return origin.getText();
 	}
 	
-	public String getMusicText() {
+	public String getTypeText() {
 		return type.getText();
 	}
 	

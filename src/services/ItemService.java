@@ -20,9 +20,6 @@ public class ItemService {
 	public ItemService(DatabaseConnection dbConnection) {
 		this.dbConnection=dbConnection;
 	}
-	
-	// Returns all the stages of the database
-	// Returns all the stages of the database
 		public ArrayList<GameItem> getItems(String game) {
 			 ArrayList<GameItem> items = new ArrayList<GameItem>();
 			 try {
@@ -62,13 +59,13 @@ public class ItemService {
 			return null;
 		}
 	
-	public boolean addItem(String name, String origin, String type, String gameName) {
+	public boolean addItem(String name, String origin, int type, String gameName) {
 		try {
 			CallableStatement addItemST = dbConnection.getConnection().prepareCall("{? = call dbo.insert_Item(?,?,?,?)}");
 			addItemST.registerOutParameter(1, Types.INTEGER);
 			addItemST.setNString(2, name);
 			addItemST.setNString(3, origin);
-			addItemST.setNString(4, type);
+			addItemST.setInt(4, type);
 			addItemST.setNString(5, gameName);
 			addItemST.executeUpdate();
 			int returnValue = addItemST.getInt(1);
@@ -130,13 +127,13 @@ public class ItemService {
 		return false;
 	}
 	
-	public boolean updateItem(String name, String origin, String type, String gameName) {
+	public boolean updateItem(String name, String origin, int type, String gameName) {
 		try {
 			CallableStatement updateItemST = dbConnection.getConnection().prepareCall("{? = call dbo.update_Item(?,?,?,?)}");
 			updateItemST.registerOutParameter(1, Types.INTEGER);
 			updateItemST.setNString(2, name);
 			updateItemST.setNString(3, origin);
-			updateItemST.setNString(4, type);
+			updateItemST.setInt(4, type);
 			updateItemST.setNString(5, gameName);
 			updateItemST.executeUpdate();
 			int returnValue = updateItemST.getInt(1);

@@ -93,7 +93,7 @@ public class ItemPanel extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(itemService.deleteItem(game.getText(), name)) setConnected(game.getText());
+				if(itemService.deleteItem(name, game.getText())) setConnected(game.getText());
 			}
 
 		});
@@ -110,8 +110,10 @@ public class ItemPanel extends ViewPanel {
 
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						
+						int type = Integer.valueOf(addItem.type.getText());
 							
-						if(itemService.updateItem(addItem.name.getText(), addItem.origin.getText(), addItem.type.getText(), game.getText())) {
+						if(itemService.updateItem(addItem.name.getText(), addItem.origin.getText(), type, game.getText())) {
 							items = itemService.getItems(game.getText());
 							drawItems();	
 							drawSelectedStage(addItem.name.getText());
@@ -151,8 +153,10 @@ public class ItemPanel extends ViewPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int type = Integer.valueOf(addItem.type.getText());
 
-				if (itemService.addItem(addItem.name.getText(), addItem.origin.getText(), addItem.type.getText(),
+				if (itemService.addItem(addItem.name.getText(), addItem.origin.getText(), type,
 						game.getText())) {
 					items = itemService.getItems(game.getText());
 					drawItems();
