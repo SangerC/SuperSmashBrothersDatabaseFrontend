@@ -47,17 +47,31 @@ public class DataImporter {
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			if (row.getRowNum() > 0) {
-				switch (i) {
+				switch (i) {			
 				case 0:
+					System.out.println("Used for Characters");
+					break;
+					
+				case 1:
+					System.out.println("Used for Characters");
+					break;
+					
+				case 2:
+					System.out.println("Used for Characters");
+					break;
+					
+				case 3:
+					System.out.println("Used for Characters");
+					break;
+					
+				case 4:
 					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
 					break;
-				case 1:
+				case 5:
 					itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							(int)row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
 					break;
-				case 2:
-					System.out.println("Used for Characters");
 				default:
 					System.out.print("No clear sheet picked. Stopping Import");
 					return;
@@ -75,7 +89,7 @@ public class DataImporter {
 
 	public static void main(String[] args) throws IOException, InvalidFormatException {
 		DataImporter dataImporter = new DataImporter();
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 6; i++) {
 			dataImporter.dataimport(i);
 		}
 		System.out.println("All data has successfully been imported into the Database");
