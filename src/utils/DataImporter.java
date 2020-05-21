@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.record.DBCellRecord;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -59,14 +61,14 @@ public class DataImporter {
 			if (row.getRowNum() > 0) {
 				switch (i) {
 				case 0:
+					
 					gameServices.addGame(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							row.getCell(2).getStringCellValue());
 					break;
 
 				case 1:
 					characterServices.addCharacter(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue(), (int) row.getCell(3).getNumericCellValue(),
-							(int) row.getCell(4).getNumericCellValue());
+							row.getCell(2).getStringCellValue(), 2, 2);
 					break;
 
 				case 2:
@@ -79,12 +81,14 @@ public class DataImporter {
 					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
 					break;
+					
 				case 4:
 					itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							(int) row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
 					break;
+					
 				default:
-					System.out.print("No clear sheet picked. Stopping Import");
+					JOptionPane.showMessageDialog(null, "ERROR: No sheet picked. Stopping Import");
 					return;
 				}
 			}
@@ -103,7 +107,7 @@ public class DataImporter {
 		for (int i = 0; i < 5; i++) {
 			dataImporter.dataimport(i);
 		}
-		System.out.println("All data has successfully been imported into the Database");
+		JOptionPane.showMessageDialog(null, "All data has successfully been imported into the Database");
 	}
 
 }
