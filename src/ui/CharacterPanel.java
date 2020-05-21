@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JTextField;
-
 import databaseobjects.GameCharacter;
 import databaseobjects.SelectedCharacter;
 import services.CharacterService;
