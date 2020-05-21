@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import databaseobjects.Game;
 import databaseobjects.GameCharacter;
 import databaseobjects.SelectedCharacter;
 
@@ -141,6 +143,40 @@ public class CharacterService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public HashMap<SelectedCharacter, String> getCompare(MoveService moveService, String characterName) {
+		HashMap<SelectedCharacter, String> characters = new HashMap<SelectedCharacter, String>();
+				
+		 try {
+			Statement ST = dbConnection.getConnection().createStatement();
+			String Query = "SELECT Name FROM Game";
+			ResultSet RS = ST.executeQuery(Query);
+			
+			int nameIndex = RS.findColumn("Name");
+			
+			while (RS.next()) {
+				
+				Statement characterST = dbConnection.getConnection().createStatement();
+				String characterQuery = "SELECT * FROM Character WHERE GameName = "+"'"+RS.getString(nameIndex)+"' and Name = '"+characterName+"'";
+				ResultSet characterRS = characterST.executeQuery(characterQuery);
+				
+				int characterNameIndex = characterRS.findColumn("Name");
+				int originIndex = characterRS.findColumn("Origin");
+				int speedIndex = characterRS.findColumn("Speed");
+				int weightIndex = characterRS.findColumn("Weight");
+				
+				while(characterRS.next()) {
+					characters.put( new SelectedCharacter(moveService,RS.getString(nameIndex), characterRS.getString(characterNameIndex), characterRS.getString(originIndex),characterRS.getInt(speedIndex),characterRS.getInt(weightIndex)),RS.getString(nameIndex));
+				}
+
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		 
+		return characters;
 	}
 	
 

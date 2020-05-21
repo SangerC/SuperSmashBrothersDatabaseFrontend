@@ -142,6 +142,16 @@ public class CharacterPanel extends ViewPanel {
 
 		});
 		
+		this.selectedCharacter.getCompare().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				CompareWindow cw = new CompareWindow(moveService, name, characterService);
+				cw.draw();
+			}
+			
+		});
+		
 		this.selectedCharacter.revalidate();
 		this.selectedCharacter.repaint();
 		this.revalidate();

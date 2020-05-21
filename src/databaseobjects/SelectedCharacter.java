@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import services.MoveService;
+import ui.CompareWindow;
 
 public class SelectedCharacter extends JPanel{
 	
@@ -102,7 +103,6 @@ public class SelectedCharacter extends JPanel{
 		update = new JButton("Edit");
 		this.add(update);
 		
-
 		compare = new JButton("Compare");
 		this.add(compare);
 
@@ -217,6 +217,10 @@ public class SelectedCharacter extends JPanel{
 	
 	public JButton getUpdate(){
 		return update;
+	}
+	
+	public JButton getCompare(){
+		return compare;
 	}
 	
 	public String getNameText() {
