@@ -126,7 +126,6 @@ public class MoveService {
 			int returnValue = str.getInt(1);
 
 			if (returnValue == 0) {
-				JOptionPane.showMessageDialog(null, "Move added");
 				return true;
 			}
 			

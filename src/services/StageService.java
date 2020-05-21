@@ -74,7 +74,6 @@ public class StageService {
 			int returnValue = addStageST.getInt(1);
 
 			if (returnValue == 0) {
-				JOptionPane.showMessageDialog(null, "The stage was succesfully added to the database.");
 				return true;
 			}
 

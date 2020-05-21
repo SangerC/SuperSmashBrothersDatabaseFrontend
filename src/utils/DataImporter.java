@@ -70,7 +70,8 @@ public class DataImporter {
 					break;
 
 				case 2:
-					System.out.println("COSTUMES CURRENTLY EMPTY");
+					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
 					break;
 
 				case 3:

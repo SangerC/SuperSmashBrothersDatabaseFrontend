@@ -51,7 +51,6 @@ public class GameService {
 			int returnValue = str.getInt(1);
 
 			if (returnValue == 0) {
-				JOptionPane.showMessageDialog(null, "The game was succesfully added to the database.");
 				return true;
 			}
 
