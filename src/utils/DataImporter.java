@@ -70,8 +70,9 @@ public class DataImporter {
 					break;
 
 				case 2:
-					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
+					moveServices.updateMove(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue(),
+							row.getCell(4).getStringCellValue(), row.getCell(5).getStringCellValue());
 					break;
 
 				case 3:
