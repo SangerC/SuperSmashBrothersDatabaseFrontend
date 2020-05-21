@@ -28,7 +28,7 @@ import services.StageService;
  */
 public class DataImporter {
 
-	public static final String FILE_PATH = "C:\\Users\\scottjm1\\Documents\\CSSE\\CSSE 333\\SuperSmashData.xlsx";
+	public static final String FILE_PATH = "SuperSmashData.xlsx";
 	DatabaseConnection dbConnection = new DatabaseConnection();
 	StageService stageServices;
 	ItemService itemServices;
