@@ -103,7 +103,7 @@ public class DataImporter {
 
 	public static void main(String[] args) throws IOException, InvalidFormatException {
 		DataImporter dataImporter = new DataImporter();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 3; i < 5; i++) {
 			dataImporter.dataimport(i);
 		}
 		JOptionPane.showMessageDialog(null, "All data has successfully been imported into the Database");
