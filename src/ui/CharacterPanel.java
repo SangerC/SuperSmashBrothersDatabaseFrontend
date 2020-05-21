@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import databaseobjects.GameCharacter;
 import databaseobjects.SelectedCharacter;
@@ -24,6 +25,7 @@ public class CharacterPanel extends ViewPanel {
 	JButton leftButton;
 	JButton rightButton;
 	JButton addCharacterButton;
+	JTextField search;
 	
 	public CharacterPanel(CharacterService characterService, MoveService moveService) {
 		super();
@@ -34,6 +36,15 @@ public class CharacterPanel extends ViewPanel {
 		this.leftButton = new JButton("<");
 		this.rightButton = new JButton(">");
 		this.addCharacterButton = new JButton("+");
+		this.search = new JTextField();
+		this.search.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setConnected(game.getText());
+			}
+			
+		});
 		this.leftButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -67,6 +78,7 @@ public class CharacterPanel extends ViewPanel {
 		this.leftButton.setBounds(1145, 5, 50, 25);
 		this.rightButton.setBounds(1200, 5, 50, 25);
 		this.addCharacterButton.setBounds(1090, 5, 50, 25);
+		this.search.setBounds(860, 5, 200, 25);
 		this.addCharacter = new AddCharacter(null);
 		this.selectedCharacter = new SelectedCharacter(moveService, "", "", "", 0,0);
 	}
@@ -78,6 +90,7 @@ public class CharacterPanel extends ViewPanel {
 		this.add(leftButton);
 		this.add(rightButton);
 		this.add(addCharacterButton);
+		this.add(search);
 		this.characters = characterService.getCharacters(currentGame);
 		this.drawCharacters();
 		this.revalidate();
@@ -191,11 +204,18 @@ public class CharacterPanel extends ViewPanel {
 	}
 	
 	public void drawCharacters() {
+		ArrayList<GameCharacter> filtered = new ArrayList<GameCharacter>();
+		for(GameCharacter c : characters) {
+			if(c.getNameText().contains(search.getText())) {
+				filtered.add(c);
+			}
+		}
+		
 		int hPos = 410;
 		int vPos = 40;
 		int consec = 0;
-		for(int i =page*48; i < page*48+48&&i<characters.size(); i++) {
-			GameCharacter c = characters.get(i);
+		for(int i =page*48; i < page*48+48&&i<filtered.size(); i++) {
+			GameCharacter c = filtered.get(i);
 			
 			this.add(c);
 			c.setLocation(hPos, vPos);
