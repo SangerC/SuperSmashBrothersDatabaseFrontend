@@ -15,7 +15,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import services.CharacterService;
-import services.CostumeService;
 import services.DatabaseConnection;
 import services.GameService;
 import services.ItemService;
@@ -32,7 +31,6 @@ public class DataImporter {
 	StageService stageServices;
 	ItemService itemServices;
 	CharacterService characterServices;
-	CostumeService costumeServices;
 	GameService gameServices;
 	MoveService moveServices;
 
@@ -42,7 +40,6 @@ public class DataImporter {
 		stageServices = new StageService(dbConnection);
 		itemServices = new ItemService(dbConnection);
 		characterServices = new CharacterService(dbConnection);
-		costumeServices = new CostumeService(dbConnection);
 		gameServices = new GameService(dbConnection);
 		moveServices = new MoveService(dbConnection);
 
