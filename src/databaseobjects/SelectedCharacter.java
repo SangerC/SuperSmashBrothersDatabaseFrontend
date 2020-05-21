@@ -23,6 +23,7 @@ public class SelectedCharacter extends JPanel{
 	JLabel weightLabel;
 	JButton delete;
 	JButton update;
+	JButton compare;
 	
 	JLabel damageFrames;
 	JLabel directionLabel;
@@ -90,6 +91,9 @@ public class SelectedCharacter extends JPanel{
 		update = new JButton("Edit");
 		this.add(update);
 		
+		compare = new JButton("Compare");
+		this.add(compare);
+		
 		findMove = new JButton("Get move");
 		this.add(findMove);
 		findMove.addActionListener(new ActionListener() {
@@ -118,6 +122,7 @@ public class SelectedCharacter extends JPanel{
 		this.weightLabel.setBounds(5, 325, 150, 200);
 		this.delete.setBounds(340, 440, 50, 25);
 		this.update.setBounds(250, 440, 80, 25);
+		this.compare.setBounds(140, 440, 100, 25);
 		
 		this.damageFrames.setBounds(200, 180, 500, 25);
 		this.typeLabel.setBounds(240, 200, 500, 25);
