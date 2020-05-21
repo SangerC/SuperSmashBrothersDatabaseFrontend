@@ -61,7 +61,6 @@ public class DataImporter {
 			if (row.getRowNum() > 0) {
 				switch (i) {
 				case 0:
-					
 					gameServices.addGame(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
 							row.getCell(2).getStringCellValue());
 					break;
