@@ -71,7 +71,6 @@ public class ItemService {
 			int returnValue = addItemST.getInt(1);
 
 			if (returnValue == 0) {
-				JOptionPane.showMessageDialog(null, "The Item was succesfully added to the database.");
 				return true;
 			}
 

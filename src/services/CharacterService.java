@@ -76,7 +76,6 @@ public class CharacterService {
 			int returnValue = str.getInt(1);
 
 			if (returnValue == 0) {
-				JOptionPane.showMessageDialog(null, "The character was succesfully added to the database.");
 				return true;
 			}
 
