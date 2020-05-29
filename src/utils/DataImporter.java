@@ -21,7 +21,9 @@ import services.DatabaseConnection;
 import services.GameService;
 import services.ItemService;
 import services.MoveService;
+import services.ProfileService;
 import services.StageService;
+import services.UserServices;
 
 /*
  * This program reads from an Excel file and imports that data into the database.
@@ -35,6 +37,8 @@ public class DataImporter {
 	CharacterService characterServices;
 	GameService gameServices;
 	MoveService moveServices;
+	UserServices userServices;
+	ProfileService profileServices;
 
 	public DataImporter() {
 		dbConnection = new DatabaseConnection();
@@ -44,57 +48,137 @@ public class DataImporter {
 		characterServices = new CharacterService(dbConnection);
 		gameServices = new GameService(dbConnection);
 		moveServices = new MoveService(dbConnection);
-
+		userServices = new UserServices(dbConnection);
+		profileServices = new ProfileService(dbConnection);
+	}
+	
+	public void importGames(Iterator<Row> games) {
+		
+		while(games.hasNext()) {
+			Row row = games.next();
+			if(row.getCell(0)==null)break;
+			gameServices.addGame(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), 
+					             row.getCell(2).getStringCellValue());
+		}
+		
 	}
 
-	public void dataimport(int i) throws EncryptedDocumentException, IOException {
-		// // Creating a Workbook from an Excel File
+	public void importCharacters(Iterator<Row> characters) {
+		
+		while(characters.hasNext()) {
+			Row row = characters.next();
+			if(row.getCell(0)==null)break;
+			characterServices.addCharacter(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), 
+					                       row.getCell(2).getStringCellValue(), (int)row.getCell(3).getNumericCellValue(), (int)row.getCell(4).getNumericCellValue());
+		}
+		
+	}
+	
+	public void importMoves(Iterator<Row> moves) {
+		
+		while(moves.hasNext()) {
+			Row row = moves.next();
+			if(row.getCell(0)==null)break;
+			moveServices.updateMove(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), 
+					                row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue(), 
+					                String.valueOf((int)row.getCell(4).getNumericCellValue()), String.valueOf((int)row.getCell(5).getNumericCellValue()));
+		}
+		
+	}
+	
+	public void importItems(Iterator<Row> items) {
+		
+		while(items.hasNext()) {
+			Row row = items.next();
+			if(row.getCell(0)==null)break;
+			itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+					       (int) row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
+		}
+		
+	}
+	
+	public void importStages(Iterator<Row> stages) {
+		
+		while(stages.hasNext()) {
+			Row row = stages.next();
+			if(row.getCell(0)==null)break;
+			stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
+			                       row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
+		}
+		
+	}
+	
+	public void importUsers(Iterator<Row> users) {
+		
+		while(users.hasNext()) {
+			Row row = users.next();
+			if(row.getCell(0)==null)break;
+			userServices.register(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue());
+		}
+		
+	}
+	
+	public void importUserFavorites(Iterator<Row> users) {
+		
+		while(users.hasNext()) {
+			Row row = users.next();
+			if(row.getCell(0)==null)break;
+			profileServices.updateFav(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue());
+		}
+		
+	}
+	
+	public void importData() throws EncryptedDocumentException, IOException {
 		Workbook workbook = WorkbookFactory.create(new File(FILE_PATH));
 
 		// Gets the first sheet
-		Sheet theSheet = workbook.getSheetAt(i);
+		Sheet theSheet = workbook.getSheetAt(0);
 
 		// Obtain a rowIterator and columnIterator
 		Iterator<Row> rowIterator = theSheet.rowIterator();
-		while (rowIterator.hasNext()) {
-			Row row = rowIterator.next();
-			if (row.getRowNum() > 0) {
-				switch (i) {
-				case 0:
-					gameServices.addGame(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue());
-					break;
-
-				case 1:
-					characterServices.addCharacter(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue(), 2, 2);
-					break;
-
-				case 2:
-					moveServices.updateMove(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue(),
-							row.getCell(4).getStringCellValue(), row.getCell(5).getStringCellValue());
-					break;
-
-				case 3:
-					stageServices.addStage(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue());
-					break;
-					
-				case 4:
-					itemServices.addItem(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(),
-							(int) row.getCell(2).getNumericCellValue(), row.getCell(3).getStringCellValue());
-					break;
-					
-				default:
-					JOptionPane.showMessageDialog(null, "ERROR: No sheet picked. Stopping Import");
-					return;
-				}
-			}
-		}
-		// Close the workbook
+		
+		rowIterator.next();
+		importGames(rowIterator);
+		
+		theSheet = workbook.getSheetAt(1);
+		rowIterator = theSheet.rowIterator();
+	
+		rowIterator.next();
+		importCharacters(rowIterator);
+		
+		theSheet = workbook.getSheetAt(2);
+		rowIterator = theSheet.rowIterator();
+		
+		rowIterator.next();
+		importMoves(rowIterator);
+		
+		theSheet = workbook.getSheetAt(3);
+		rowIterator = theSheet.rowIterator();
+		
+		rowIterator.next();
+		importStages(rowIterator);
+		
+		theSheet = workbook.getSheetAt(4);
+		rowIterator = theSheet.rowIterator();
+		
+		rowIterator.next();
+		importItems(rowIterator);
+		
+		theSheet = workbook.getSheetAt(5);
+		rowIterator = theSheet.rowIterator();
+		
+		rowIterator.next();
+		importUsers(rowIterator);
+		
+		theSheet = workbook.getSheetAt(6);
+		rowIterator = theSheet.rowIterator();
+		
+		rowIterator.next();
+		importUserFavorites(rowIterator);
+		
 		workbook.close();
 	}
+	
 
 	private void connect() {
 		dbConnection.connect(Reader.getAttribute("serverName"), Reader.getAttribute("databaseName"),
@@ -103,9 +187,7 @@ public class DataImporter {
 
 	public static void main(String[] args) throws IOException, InvalidFormatException {
 		DataImporter dataImporter = new DataImporter();
-		for (int i = 3; i < 5; i++) {
-			dataImporter.dataimport(i);
-		}
+		dataImporter.importData();
 		JOptionPane.showMessageDialog(null, "All data has successfully been imported into the Database");
 	}
 
